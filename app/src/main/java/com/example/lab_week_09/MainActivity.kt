@@ -12,9 +12,15 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
 import com.example.lab_week_09.ui.theme.LAB_WEEK_09Theme
+import com.example.lab_week_09.ui.theme.OnBackgroundTitleText
+import com.example.lab_week_09.ui.theme.OnBackgroundItemText
+import com.example.lab_week_09.ui.theme.PrimaryTextButton
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,10 +57,10 @@ fun Home() {
     var inputField = remember { mutableStateOf(Student("")) }
 
     HomeContent(
-        listData,
-        inputField.value,
-        { input -> inputField.value = Student(input) },
-        {
+        listData = listData,
+        inputField = inputField.value,
+        onInputValueChange = { input -> inputField.value = Student(input) },
+        onButtonClick = {
             if (inputField.value.name.isNotBlank()) {
                 listData.add(inputField.value)
                 inputField.value = Student("")
@@ -79,7 +85,7 @@ fun HomeContent(
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Enter Name")
+                OnBackgroundTitleText(text = "Enter Item")
 
                 TextField(
                     value = inputField.name,
@@ -87,13 +93,11 @@ fun HomeContent(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text
                     ),
-                    modifier = Modifier.fillMaxWidth()
+                    label = { Text("Enter Name") }
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Button(onClick = { onButtonClick() }) {
-                    Text(text = "Submit")
+                PrimaryTextButton(text = "Add Item") {
+                    onButtonClick()
                 }
             }
         }
@@ -105,7 +109,7 @@ fun HomeContent(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = item.name)
+                OnBackgroundItemText(text = item.name)
             }
         }
     }
